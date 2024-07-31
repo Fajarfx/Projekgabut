@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Web</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: pink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .heart {
+            font-size: 100px;
+            color: red;
+            cursor: pointer;
+            animation: pulse 1s infinite, blink 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .click-me {
+            font-size: 20px;
+            color: red;
+            margin-top: 10px;
+            animation: blink 1.5s infinite;
+        }
+        .hidden {
+            display: none;
+        }
+        .romantic-text {
+            font-size: 24px;
+            color: white;
+            text-align: center;
+        }
+        .fade-in {
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .slide-up {
+            animation: slideUp 1s forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .centered-gif {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .sticker {
+            margin-bottom: 20px;
+            display: none; /* Initially hidden */
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: black;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="heart-container" class="centered-gif">
+        <span class="heart">&hearts;</span>
+        <div class="click-me text-center">Klik aku</div>
+    </div>
+    <div id="form-container" class="hidden fade-in">
+        <div class="text-center"></div>
+        <div class="text-center" style="margin-bottom: 30px; display: flex; justify-content: center;">
+            <div class="tenor-gif-embed" data-postid="6906406967482876790" data-share-method="host" data-aspect-ratio="1" data-width="50%">
+                <a href="https://tenor.com/view/bubu-bubu-dudu-cute-panda-bear-gif-6906406967482876790">Bubu Bubu Dudu Sticker</a>from <a href="https://tenor.com/search/bubu-stickers">Bubu Stickers</a>
+            </div>
+        </div>
+        <form id="name-form">
+            <div class="form-group">
+                <input type="text" class="form-control" id="name" placeholder="Masukan Nama Kamu" required>
+            </div>
+            <div class="text-center"><button type="submit" class="btn btn-primary">Mulai</button></div>
+        </form>
+    </div>
+    <div id="message-container" class="hidden fade-in centered-gif">
+        <img id="romantic-sticker" src="VID-20240731-WA0003.gif" alt="Romantic GIF" class="sticker" style="width: 150px; height: auto;">
+        <p id="romantic-message" class="romantic-text"></p>
+    </div>
+    <div id="question-container" class="hidden fade-in">
+        <p class="romantic-text">Apakah kamu mau?</p>
+        <button id="yes-button" class="btn btn-success">Mau</button>
+        <button id="no-button" class="btn btn-danger">Tidak</button>
+    </div>
+    <footer class="hidden fade-in">
+        <p class="text-center">@Iceberryc</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.heart').click(function() {
+                $('#heart-container').hide();
+                $('#form-container').removeClass('hidden').addClass('slide-up');
+            });
+
+            $('#name-form').submit(function(event) {
+                event.preventDefault();
+                const name = $('#name').val();
+                $('#form-container').hide();
+                $('#message-container').removeClass('hidden').addClass('slide-up');
+                $('#romantic-sticker').show(); // Show the sticker when the message starts
+                const message = `Hai ${name},Sejak pertama kali aku lihat kamu, rasanya jantungku kayak mau melawan hukum fisika—padahal biasanya cuma melawan rasa malas bangun pagi. Setiap kali kamu senyum, hari-hariku jadi cerah kayak lampu neon di ruang tunggu rumah sakit. Mau kenalan lebih dekat? Aku janji, jokes-ku bakal bikin kamu ketawa sambil mikirin kalau hidup ini kayak film horor—tapi setidaknya, ada komedinya! 😈`;
+                typeWriter(message, 0);
+            });
+
+            function typeWriter(text, i) {
+                if (i < text.length) {
+                    $('#romantic-message').append(text.charAt(i));
+                    setTimeout(function() {
+                        typeWriter(text, i + 1);
+                    }, 100);
+                } else {
+                    setTimeout(function() {
+                        $('#message-container').hide();
+                        $('#question-container').removeClass('hidden').addClass('slide-up');
+                        $('footer').removeClass('hidden').addClass('slide-up');
+                    }, 1000);
+                }
+            }
+
+            $('#yes-button, #no-button').click(function() {
+                const answer = $(this).text();
+                const phoneNumber = '+62895800480905';
+                const message = `Jawaban: ${answer}`;
+                window.open(`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
+            });
+        });
+    </script>
+    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+</body>
+</html>
